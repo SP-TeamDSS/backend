@@ -38,4 +38,6 @@ out/
 
 /src/main/resources/application.properties
 
-/data
+/src/main/resources/data
+/src/test/data
+/src/test/resources
