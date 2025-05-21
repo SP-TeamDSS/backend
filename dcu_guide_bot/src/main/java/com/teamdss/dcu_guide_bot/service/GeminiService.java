@@ -14,8 +14,11 @@ import com.teamdss.dcu_guide_bot.utils.UniversityDataLoader;
 @Service
 public class GeminiService {
 
-    @Value("${gemini.api-key}")
+    @Value("${ai.gemini.api-key}")
     private String apiKey;
+
+    @Value("${ai.gemini.model}")
+    private String model;
     
     private final UniversityDataLoader dataLoader;
     private final RestClient restClient;
@@ -23,7 +26,7 @@ public class GeminiService {
     public GeminiService(UniversityDataLoader dataLoader) {
         this.dataLoader = dataLoader;
         this.restClient = RestClient.builder()
-                .baseUrl("https://generativelanguage.googleapis.com/v1beta/models")
+                .baseUrl("https://generativelanguage.googleapis.com/v1beta")
                 .build();
     }
 
@@ -42,10 +45,11 @@ public class GeminiService {
 
         // Gemini API 호출 및 응답 파싱
         Map response = restClient.post()
-        .uri("/gemini-pro:generateContent?key=" + apiKey)
-        .body(requestBody)
-        .retrieve()
-        .body(Map.class);
+            .uri("/models/" + model + ":generateContent?key=" + apiKey)
+            .body(requestBody)
+            .retrieve()
+            .body(Map.class);
+
 
         List<Map<String, Object>> candidates = (List<Map<String, Object>>) response.get("candidates");
         if (candidates == null || candidates.isEmpty()) return "답변 없음";
