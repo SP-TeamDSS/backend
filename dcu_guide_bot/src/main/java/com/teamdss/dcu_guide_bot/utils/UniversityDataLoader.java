@@ -42,14 +42,14 @@ public class UniversityDataLoader { //로컬 데이터 로드
     
     public String buildSystemPrompt() {
         StringBuilder prompt = new StringBuilder();
-        prompt.append("당신은 대학교 정보 안내 챗봇입니다. 다음 데이터를 참고해 답변하세요:\n\n");
+        prompt.append("당신은 대학교 정보 안내 챗봇입니다. **이전 대화 기록**과 다음 데이터를 참고해 답변하세요:\n\n");
         universityData.forEach((key, value) -> {
             prompt.append(String.format("# %s 데이터\n%s\n\n", key, new Gson().toJson(value)));
         });
         prompt.append("""
             [응답 규칙]
-            1. 사용자 질문에 딱 맞는 정보만 제공
-            2. 데이터에 없는 내용은 '모르겠습니다'라고 답변
+            1. 이전 대화 맥락을 반드시 고려할 것
+            2. 모르는 내용은 '확인 후 답변드리겠습니다'라고 답변
             3. 전문 용어는 초보자도 이해할 수 있게 설명
             """);
         return prompt.toString();
